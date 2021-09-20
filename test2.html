@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Giao diện điều khiển và hiển thị </title>
+</head>
+
+<body bgcolor="beige" >
+	<center>
+	<img src="ai.jpg" width="696" height="392" border="0" >
+	<font face="Verdana" color="#000000">
+	<h1> Những đồ thị thingspeak </h1><br>
+	<!-- // ~ hình động -->
+	<p><img src="j.gif" alt="Mặt cười" style="float:left;width:150px;height:150px;"></p>
+	<p><img src="j.gif" alt="Mặt cười" style="float:right;width:150px;height:150px;"></p>
+	<!-- // field1, field2 -->
+	<h3>Nhiệt độ&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Độ ẩm </h3>
+	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/755414/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&type=line"></iframe>
+	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/755414/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&type=line"></iframe>
+	<!-- // ~ hình động -->
+	<h3>Đèn&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Động cơ </h3>
+	<p><img src="led.gif" alt="Mặt cười" style="float:left;width:150px;height:150px;"></p>
+	<p><img src="a.gif" alt="Mặt cười" style="float:right;width:150px;height:150px;"></p>
+	<!-- // field3, field4 -->
+	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/755414/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&type=line"></iframe>
+	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/755414/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&type=line"></iframe>
+	
+	<h2>"Bật/tắt" Đèn &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Điều chỉnh động cơ</h2>
+	
+	<button onclick="LEDON ()" >Bật Đèn</button>&emsp;
+	<button onclick="LEDOFF()">Tắt Đèn</button>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	
+	<input type="range" min="0" max="100" value="0" class="slider"id="myRange" onchange="updateTextInput(this.value);">
+	<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	<input type="text" id="textInput" value="">
+	<button onclick="SendPWM_value()">Gửi</button><br><br>
+	
+	<script>
+	var url = "https://api.thingspeak.com/update";
+	var params_on = "api_key=8GYXO40SSFP6F4W6&field3=1";
+	var params_off = "api_key=8GYXO40SSFP6F4W6&field3=0";
+	var xhr = new XMLHttpRequest();
+	
+	function LEDON ()
+	{
+		var url = "https://api.thingspeak.com/update";
+		var params_on = "api_key=8GYXO40SSFP6F4W6&field3=1";
+		var params_off = "api_key=8GYXO40SSFP6F4W6&field3=0";
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send(params_on);
+	}
+	function LEDOFF()
+	{
+		var url = "https://api.thingspeak.com/update";
+		var params_on = "api_key=8GYXO40SSFP6F4W6&field3=1";
+		var params_off = "api_key=8GYXO40SSFP6F4W6&field3=0";
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send(params_off);
+	}
+	
+	function SendPWM_value()
+	{
+		var url = "https://api.thingspeak.com/update";
+		var xhr = new XMLHttpRequest();
+		var pwm_value = document.getElementById('myRange').value;
+		var pwm_params = "api_key=8GYXO40SSFP6F4W6&field4="+pwm_value;
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.send(pwm_params);
+	}
+	function updateTextInput(val) {
+		document.getElementById('textInput').value=val;
+	}
+	</script>
+	</center>
+</body>
+</html>
